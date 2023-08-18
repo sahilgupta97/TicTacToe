@@ -42,4 +42,11 @@ public class Board {
   public void setBoard(Cell[][] board) {
     this.board = board;
   }
+
+  public Cell getCell(int row, int col) {
+    boolean isOutOfBounds = row < 0 || row >= this.size || col < 0
+        || col >= this.size;
+
+    return isOutOfBounds ? null : this.board[row][col];
+  }
 }

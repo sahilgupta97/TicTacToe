@@ -29,8 +29,8 @@ public class DiagonalWinningStrategy implements WinningStrategy {
       rightDiagonalWinnerTable.put(playerSymbol, rightDiagonalWinnerTable.getOrDefault(playerSymbol, 0) + 1);
     }
 
-    boolean winningByLeftDiagonal = leftDiagonalWinnerTable.get(playerSymbol) == boardSize;
-    boolean winningByRightDiagonal = leftDiagonalWinnerTable.get(playerSymbol) == boardSize;
+    boolean winningByLeftDiagonal = leftDiagonalWinnerTable.getOrDefault(playerSymbol, 0) == boardSize;
+    boolean winningByRightDiagonal = rightDiagonalWinnerTable.getOrDefault(playerSymbol, 0) == boardSize;
     return winningByLeftDiagonal || winningByRightDiagonal;
   }
 

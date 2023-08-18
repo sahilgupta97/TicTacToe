@@ -19,13 +19,31 @@ public class Player {
   }
 
   public Move makeMove(Board board) {
-    System.out.println("Please tell row count where you want to move (Starting from 0)");
-    int row = scanner.nextInt();
+    Cell cell = selectCell(board);
+    cell.acquire(this);
 
-    System.out.println("Please tell column count where you want to move (Starting from 0)");
-    int col = scanner.nextInt();
+    return new Move(this, cell);
+  }
 
-    return new Move(this, new Cell(row, col));
+  private Cell selectCell(Board board) {
+    Cell cell = null;
+    while (true) {
+      board.printBoard();
+      System.out.println("Please tell row position where you want to move (Starting from 0)");
+      int row = scanner.nextInt();
+
+      System.out.println("Please tell column position where you want to move (Starting from 0)");
+      int col = scanner.nextInt();
+
+      cell = board.getCell(row, col);
+      if (cell == null || !cell.isOccupiable()) {
+        System.out.println("Invalid move played by " + this.getName() + ". Please try again.");
+      } else {
+        break;
+      }
+    }
+
+    return cell;
   }
 
   public Long getId() {

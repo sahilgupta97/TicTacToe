@@ -21,6 +21,11 @@ public class Cell {
     }
   }
 
+  public void acquire(Player player) {
+    this.cellStatus = CellStatus.OCCUPIED;
+    this.player = player;
+  }
+
   public int getRow() {
     return row;
   }
@@ -51,5 +56,9 @@ public class Cell {
 
   public void setCellStatus(CellStatus cellStatus) {
     this.cellStatus = cellStatus;
+  }
+
+  public boolean isOccupiable() {
+    return CellStatus.VACANT.equals(this.cellStatus);
   }
 }

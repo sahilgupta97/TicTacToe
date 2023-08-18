@@ -26,8 +26,8 @@ public class GameController {
     game.undo();
   }
 
-  public void makeMove(Game game) {
-    game.makeMove();
+  public void makeNextMove(Game game) {
+    game.makeNextMove();
   }
 
   public GameStatus getGameStatus(Game game) {

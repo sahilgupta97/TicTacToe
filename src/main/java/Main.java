@@ -48,7 +48,7 @@ public class Main {
           gameController.undo(game);
         }
 
-        gameController.makeMove(game);
+        gameController.makeNextMove(game);
       }
 
       // check status of the game

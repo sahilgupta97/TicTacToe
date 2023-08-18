@@ -35,11 +35,61 @@ public class Game {
   }
 
   public void undo() {
+    if (moves.size() == 0) {
+      System.out.println("Nothing to undo !");
+      return;
+    }
 
+    Move lastMove = moves.remove(moves.size() - 1);
+
+    Cell cleanUpCell = lastMove.getCell();
+    cleanUpCell.setPlayer(null);
+    cleanUpCell.setCellStatus(CellStatus.VACANT);
+
+    for (WinningStrategy winningStrategy : winningStrategies) {
+      winningStrategy.handleUndo(getBoard(), lastMove);
+    }
+
+    int numberOfPlayers = players.size();
+    currentPlayerIdx = (currentPlayerIdx - 1 + numberOfPlayers) % numberOfPlayers;
   }
 
-  public void makeMove() {
+  public void makeNextMove() {
+    Player currentPlayer = players.get(currentPlayerIdx);
+    System.out.println("This is " + currentPlayer.getName() + "'s turn. Please make your next move.");
 
+    Move desiredMove = currentPlayer.makeMove(board);
+    System.out
+        .println(currentPlayer.getName() + " has made a move at position : (" + desiredMove.getCell().getRow()
+            + ", " + desiredMove.getCell().getCol() + ").");
+
+    moves.add(desiredMove);
+
+    if (checkWinner(board, desiredMove)) {
+      setGameStatus(GameStatus.WIN);
+      winner = currentPlayer;
+    } else if (moves.size() == (board.getSize() * board.getSize())) {
+      setGameStatus(GameStatus.DRAW);
+    }
+
+    currentPlayerIdx = (currentPlayerIdx + 1) % players.size();
+  }
+
+  private boolean checkWinner(Board board, Move move) {
+    for (WinningStrategy winningStrategy : winningStrategies) {
+      boolean hasWon = winningStrategy.checkWinner(board, move);
+      if (hasWon) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private boolean validateMove(Move move) {
+    Cell cell = move.getCell();
+    return cell != null && cell.getRow() >= 0 && cell.getRow() < board.getSize() && cell.getCol() >= 0
+        && cell.getCol() < board.getSize() && cell.getCellStatus().equals(CellStatus.VACANT);
   }
 
   public static Builder builder() {

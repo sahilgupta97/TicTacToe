@@ -19,6 +19,9 @@ public class Bot extends Player {
     Move move = botPlayingStrategy.makeMove(board);
     move.setPlayer(this);
 
+    Cell cell = move.getCell();
+    cell.acquire(this);
+
     return move;
   }
 
